@@ -1,0 +1,45 @@
+{
+  "name": "restoration-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@auth0/auth0-react": "^2.1.0",
+    "@auth0/nextjs-auth0": "^2.6.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@img-comparison-slider/react": "^8.0.0",
+    "autoprefixer": "10.4.14",
+    "body-parser": "^1.20.2",
+    "buffer": "^6.0.3",
+    "classnames": "^2.3.2",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.3",
+    "file-saver": "^2.0.5",
+    "font-awesome": "^4.7.0",
+    "framer-motion": "^10.12.16",
+    "micro": "^10.0.1",
+    "mongodb": "^5.5.0",
+    "next": "13.4.3",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
+    "react-loader-spinner": "^5.3.4",
+    "react-responsive-modal": "^6.4.1",
+    "react-uploader": "^3.36.0",
+    "stripe": "^12.7.0",
+    "tailwindcss": "3.3.2",
+    "typewriter-effect": "^2.19.0",
+    "uploader": "^3.36.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.7"
+  }
+}
