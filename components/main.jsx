@@ -176,6 +176,13 @@ const Main = ({users}) => {
             height="300px"  
         />
     );
+    let imagesLeft = 5;
+    if(user.user != undefined && userInfo != undefined) {
+        imagesLeft = (userInfo.subscription == -1 ? 5-userInfo.imagesRestored : 
+                    userInfo.subscription == 1 ? 50 - userInfo.imagesRestored : 
+                    userInfo.subscription == 2 ? 200 - userInfo.imageRestored :
+                    "Infinite");
+    }
       
     return (
         <>
@@ -206,8 +213,11 @@ const Main = ({users}) => {
                             </p>
                         </Modal>
                     </div>
-                    <div className={"flex justify-center py-10 pb-8"}>
+                    <div className={"flex flex-col items-center text-center justify-center py-10 pb-8"}>
                         <Uploader/>
+                        <div className="text-gray-300">
+                            Images Left: {imagesLeft }
+                        </div>
                     </div>
                     {originalPhoto && (
                         <div className={"flex justify-center pb-8 flex-row"}>

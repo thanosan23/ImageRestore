@@ -14,7 +14,8 @@ export default function Profile() {
 
   const getUserInfo = async (email) => {
     let response = null;
-    if(process.env.DEPLOYMENT == 'Debug') {
+    console.log(process.env.DEPLOYMENT);
+    if(process.env.DEPLOYMENT == "Debug") {
       response = await fetch("http://localhost:3000/api/getUserInfo", {
         method: "POST",
         body: JSON.stringify({ email : email }),
@@ -64,7 +65,6 @@ export default function Profile() {
     else if(userInfo["subscription"] == 3) subscription = "Tier 3";
   }
   
-	
 
   return (
     
@@ -124,7 +124,7 @@ export default function Profile() {
                         },
                       });
                     }
-                  
+                    
                 }}
             >
                 Refund</button>
