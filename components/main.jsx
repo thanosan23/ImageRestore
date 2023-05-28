@@ -80,7 +80,7 @@ const Main = ({users}) => {
         if(!addedUser) {
             if(userData != undefined) {
                 email = JSON.parse(userData).email;
-                if(users != null && !users.includes(email)) {
+                if(users != null && users != undefined && !users.includes(email)) {
                     addUser(email);
                     setAddedUser(true);
                     getUserInfo(email);

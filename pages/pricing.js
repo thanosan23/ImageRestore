@@ -4,11 +4,48 @@ import { FaBeer } from 'react-icons/fa';
 import { VscCheck } from "react-icons/vsc";
 import { RxCrossCircled } from "react-icons/rx";
 
-import checkout from "./Checkout";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
+
+import Stripe from 'stripe';
+
+import emailjs from '@emailjs/browser'
+
+async function checkout({lineItems}, email, subscription_num){
+	let stripe = new Stripe(process.env.NEXT_PUBLIC_API_KEY)
+
+	const sendEmail = async (email) => {
+		var templateParams = {
+		  email: email,
+		  to_name: email,
+		  chosen_subscription: (subscription_num == 1 ? "Tier 1" : (subscription_num == 2 ? "Tier 2" :subscription_num == 3 ? "Tier 3" : ""))
+		}
+		await emailjs.send(process.env.EMAILJS_SERVICE, 'template_9xcht1m', templateParams, process.env.EMAILJS_KEY).then((response) => {
+			console.log(response)
+		})
+	};
+	if(email != "" && email != undefined && email != null) {
+		sendEmail(email);
+	}
+
+	const session = await stripe.checkout.sessions.create({
+		mode: 'payment',
+		line_items: lineItems,
+		success_url: "http://localhost:3000/",
+		cancel_url: "http://localhost:3000/",
+		metadata: {
+			email: email,
+			subscription: subscription_num
+		}
+	})
+
+	window.location = session.url;
+
+	return session;
+
+}
 
 
 export default function Pricing() {
@@ -289,7 +326,7 @@ export default function Pricing() {
               <div className="pt-4 text-2xl text-white">
                 <h1>Tier 3</h1>
                 <h2 className="text-white text-base pt-4">
-                  For large corporations & Large Image packages
+                  For large corporations & large image packages
                 </h2>
                 <div>
                   <div className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></div>

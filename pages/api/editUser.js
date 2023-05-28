@@ -4,6 +4,8 @@ import Stripe from 'stripe';
 
 import { buffer } from "micro";
 
+import emailjs from '@emailjs/browser'
+
 export const config = {
     api: {
       bodyParser: false,
@@ -38,14 +40,17 @@ export default async function handler(req, res) {
         console.log(`Webhook Error: ${err.message}`)
     }
 
+     
+
     switch (event.type) {
         case 'checkout.session.completed':
-          const checkoutSessionCompleted = event.data.object;
+          const paymentIntent = event.data.object.payment_intent;
+          console.log(paymentIntent);
           const client = await clientPromise;
           const db = client.db("users");
           db.collection("users").updateOne(
             { email: email },
-            { $set: { subscription : subscription} }
+            { $set: { subscription : subscription, paymentIntent : paymentIntent} }
           );
           break;
         default:

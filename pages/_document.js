@@ -7,13 +7,11 @@ import Footer from "../components/footer";
 export default function Document() {
   return (
     <Html lang="en">
+      <title>ImageRestore</title>
       <Head>
         <link rel="shortcut icon" href="/logo.svg" />
       </Head>
       <body>
-        <head>
-          <title>ImageRestore</title>
-        </head>
         <Main />
         <Footer/>
         <NextScript />

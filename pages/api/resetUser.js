@@ -6,14 +6,12 @@ export default async function handler(req, res) {
     const db = client.db("users");
     const { email } = req.body;
 
-    const user = await db.collection("users").insertOne({
-        email: email,
-        subscription: -1,
-        imagesRestored: 0,
-        paymentIntent: ""
-    })
+    db.collection("users").updateOne(
+      { email: email },
+      { $set: { subscription : -1, paymentIntent : ""} }
+    );
   
-    res.status(200).json(user);
+    res.status(200);
 
 
   }

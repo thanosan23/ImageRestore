@@ -1,8 +1,7 @@
 import Main from "../components/main"
-import Navbar from "../components/navbar"
 
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   let response = await fetch("http://localhost:3000/api/getUsers");
   let userDb = await response.json();
   let userList = [];
