@@ -13,14 +13,26 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
 
   const getUserInfo = async (email) => {
-    let response = await fetch("http://localhost:3000/api/getUserInfo", {
+    let response = null;
+    if(process.env.DEPLOYMENT == 'Debug') {
+      response = await fetch("http://localhost:3000/api/getUserInfo", {
         method: "POST",
         body: JSON.stringify({ email : email }),
         headers: {
             Accept: "application/json, text/plain, */*",
             "Content-Type": "application/json",
         },
-    });
+      });
+    } else {
+      response = await fetch("https://image-restore-sand.vercel.app/api/getUserInfo", {
+        method: "POST",
+        body: JSON.stringify({ email : email }),
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+        },
+      });
+    }
     setUserInfo(await response.json());
   }
 
@@ -93,14 +105,26 @@ export default function Profile() {
                     };
                     console.log(userInfo["email"])
                     sendEmail(userInfo["email"]);
-                    await fetch("http://localhost:3000/api/resetUser", {
-                      method: "POST",
-                      body: JSON.stringify({ email : userInfo["email"] }),
-                      headers: {
-                          Accept: "application/json, text/plain, */*",
-                          "Content-Type": "application/json",
-                      },
-                    });
+                    if(process.env.DEPLOYMENT == 'Debug') {
+                      await fetch("http://localhost:3000/api/resetUser", {
+                        method: "POST",
+                        body: JSON.stringify({ email : userInfo["email"] }),
+                        headers: {
+                            Accept: "application/json, text/plain, */*",
+                            "Content-Type": "application/json",
+                        },
+                      });
+                    } else {
+                      await fetch("https://image-restore-sand.vercel.app/api/resetUser", {
+                        method: "POST",
+                        body: JSON.stringify({ email : userInfo["email"] }),
+                        headers: {
+                            Accept: "application/json, text/plain, */*",
+                            "Content-Type": "application/json",
+                        },
+                      });
+                    }
+                  
                 }}
             >
                 Refund</button>

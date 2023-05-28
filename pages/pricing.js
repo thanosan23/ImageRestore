@@ -33,8 +33,8 @@ async function checkout({lineItems}, email, subscription_num){
 	const session = await stripe.checkout.sessions.create({
 		mode: 'payment',
 		line_items: lineItems,
-		success_url: "http://localhost:3000/",
-		cancel_url: "http://localhost:3000/",
+		success_url: (process.env.DEPLOYMENT == 'Debug' ? "http://localhost:3000/" : "https://image-restore-sand.vercel.app/"),
+		cancel_url: (process.env.DEPLOYMENT == 'Debug' ? "http://localhost:3000/" : "https://image-restore-sand.vercel.app/"),
 		metadata: {
 			email: email,
 			subscription: subscription_num
@@ -57,14 +57,19 @@ export default function Pricing() {
   const [userInfo, setUserInfo] = useState(null);
 
   const getUserInfo = async (email) => {
-    let response = await fetch("http://localhost:3000/api/getUserInfo", {
-        method: "POST",
-        body: JSON.stringify({ email : email }),
-        headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-        },
-    });
+    let response = null;
+    if(process.env.DEPLOYMENT == 'Debug') {
+      response = await fetch("http://localhost:3000/api/getUsers");
+    } else {
+      response = await fetch("https://image-restore-sand.vercel.app/api/getUserInfo", {
+          method: "POST",
+          body: JSON.stringify({ email : email }),
+          headers: {
+              Accept: "application/json, text/plain, */*",
+              "Content-Type": "application/json",
+          },
+      });
+    }
     setUserInfo(await response.json());
   }
 

@@ -2,7 +2,12 @@ import Main from "../components/main"
 
 
 export const getServerSideProps = async () => {
-  let response = await fetch("http://localhost:3000/api/getUsers");
+  let response;
+  if(process.env.DEPLOYMENT == 'Debug') {
+    response = await fetch("http://localhost:3000/api/getUsers");
+  } else {
+    response = await fetch("https://image-restore-sand.vercel.app/api/getUsers");
+  }
   let userDb = await response.json();
   let userList = [];
   for(let i = 0; i < userDb.length; i++) {
