@@ -101,12 +101,12 @@ const Main = ({users}) => {
         const userData = JSON.stringify(user.user);
         let email = null;
         if(!addedUser) {
+            getUserInfo(email);
             if(userData != undefined) {
                 email = JSON.parse(userData).email;
                 if(users != null && users != undefined && !users.includes(email)) {
                     addUser(email);
                     setAddedUser(true);
-                    getUserInfo(email);
                 } else {
                     getUserInfo(email);
                 }
@@ -122,7 +122,7 @@ const Main = ({users}) => {
                 if (file.length !== 0) {
 
 
-                    let userInfo = await fetch("/api/getUserInfo", {
+                    let userInfo = await fetch("http://localhost:3000/api/getUserInfo", {
                         method: "POST",
                         headers: {
                           "Content-Type": "application/json",
@@ -143,15 +143,7 @@ const Main = ({users}) => {
                         let link = file[0].fileUrl.replace("raw", "thumbnail");
                         setOriginalPhoto(link);
 
-                        await fetch("/api/editUserGenerated", {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ email : user.user.email }),
-                        })
-
-                        const res = await fetch("/api/restore", {
+                        const res = await fetch("http://localhost:3000/api/restore", {
                             method: "POST",
                             headers: {
                               "Content-Type": "application/json",
@@ -163,8 +155,15 @@ const Main = ({users}) => {
                         setRestoredPhoto(restoredPhoto);
                         
                         saveAs(restoredPhoto, restoredPhoto.substring(restoredPhoto.lastIndexOf('/') + 1));
-    
                         setLoading(false);
+    
+                        await fetch("http://localhost:3000/api/editUserGenerated", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ email : user.user.email }),
+                        })
                         
                     } else {
                         setOpen(true);
@@ -215,9 +214,6 @@ const Main = ({users}) => {
                     </div>
                     <div className={"flex flex-col items-center text-center justify-center py-10 pb-8"}>
                         <Uploader/>
-                        <div className="text-gray-300">
-                            Images Left: {imagesLeft }
-                        </div>
                     </div>
                     {originalPhoto && (
                         <div className={"flex justify-center pb-8 flex-row"}>

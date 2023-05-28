@@ -103,27 +103,15 @@ export default function Profile() {
                         console.log(response)
                       })
                     };
-                    console.log(userInfo["email"])
+                    await fetch("http://localhost:3000/api/resetUser", {
+                      method: "POST",
+                      body: JSON.stringify({ email : userInfo["email"] }),
+                      headers: {
+                          Accept: "application/json, text/plain, */*",
+                          "Content-Type": "application/json",
+                      },
+                    });
                     sendEmail(userInfo["email"]);
-                    if(process.env.DEPLOYMENT == 'Debug') {
-                      await fetch("http://localhost:3000/api/resetUser", {
-                        method: "POST",
-                        body: JSON.stringify({ email : userInfo["email"] }),
-                        headers: {
-                            Accept: "application/json, text/plain, */*",
-                            "Content-Type": "application/json",
-                        },
-                      });
-                    } else {
-                      await fetch("https://image-restore-sand.vercel.app/api/resetUser", {
-                        method: "POST",
-                        body: JSON.stringify({ email : userInfo["email"] }),
-                        headers: {
-                            Accept: "application/json, text/plain, */*",
-                            "Content-Type": "application/json",
-                        },
-                      });
-                    }
                     
                 }}
             >

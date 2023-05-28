@@ -1,19 +1,16 @@
 import Main from "../components/main"
 
-import useSWR from 'swr';
-
-export default function Home() {
-  const fetcher = (url) => fetch(url).then((res) => res.json());
-  const { data, _ } = useSWR('/api/getUsers', fetcher);
-
-  let userDb = data;
+export const getServerSideProps = async () => {
+  let response = await fetch("http://localhost:3000/api/getUsers");
+  let userDb = await response.json();
   let userList = [];
-
-  if(userDb != undefined) {
-    for(let i = 0; i < userDb.length; i++) {
+  for(let i = 0; i < userDb.length; i++) {
       userList.push(userDb[i].email);
-    }
   }
+  return { props: { userList } };
+};
+
+export default function Home({ userList }) {
   return (
     <>
         <Main users={userList}/>

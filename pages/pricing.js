@@ -13,19 +13,20 @@ import Stripe from 'stripe';
 
 import emailjs from '@emailjs/browser'
 
+const sendEmail = async (email) => {
+  var templateParams = {
+    email: email,
+    to_name: email,
+    chosen_subscription: (subscription_num == 1 ? "Tier 1" : (subscription_num == 2 ? "Tier 2" :subscription_num == 3 ? "Tier 3" : ""))
+  }
+  await emailjs.send(process.env.EMAILJS_SERVICE, 'template_9xcht1m', templateParams, process.env.EMAILJS_KEY).then((response) => {
+    console.log(response)
+  })
+};
+
 async function checkout({lineItems}, email, subscription_num){
 	let stripe = new Stripe(process.env.NEXT_PUBLIC_API_KEY)
-
-	const sendEmail = async (email) => {
-		var templateParams = {
-		  email: email,
-		  to_name: email,
-		  chosen_subscription: (subscription_num == 1 ? "Tier 1" : (subscription_num == 2 ? "Tier 2" :subscription_num == 3 ? "Tier 3" : ""))
-		}
-		await emailjs.send(process.env.EMAILJS_SERVICE, 'template_9xcht1m', templateParams, process.env.EMAILJS_KEY).then((response) => {
-			console.log(response)
-		})
-	};
+	
 	if(email != "" && email != undefined && email != null) {
 		sendEmail(email);
 	}
@@ -59,7 +60,7 @@ export default function Pricing() {
   const getUserInfo = async (email) => {
     let response = null;
     if(process.env.DEPLOYMENT == 'Debug') {
-      response = await fetch("http://localhost:3000/api/getUsers");
+      response = await fetch("http://localhost:3000/api/getUserInfo");
     } else {
       response = await fetch("https://image-restore-sand.vercel.app/api/getUserInfo", {
           method: "POST",
@@ -198,6 +199,7 @@ export default function Pricing() {
 
             <button onClick={(async () => {
               {user.user != null && (
+
                   await checkout({
                     lineItems: [
                       {
@@ -207,6 +209,7 @@ export default function Pricing() {
   
                     ]
                   }, user.user.email, 1)
+
                 
               )}
               {user.user == null && (

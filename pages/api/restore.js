@@ -18,6 +18,7 @@ export default async function handler(req, res) {
   let jsonResponse = await response.json();
   console.log(jsonResponse);
   let restoredImage = jsonResponse.urls.get;
+  
 
   let image = null;
 
